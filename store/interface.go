@@ -14,6 +14,7 @@ type IStore interface {
 	IOrderDetail
 	ICatergory
 	IReview
+	ILog
 }
 
 type Migrateable interface {
@@ -42,4 +43,8 @@ type ICatergory interface {
 
 type IReview interface {
 	CreateReview(ctx context.Context, review domain.Review) (uint, error)
+}
+
+type ILog interface {
+	CreateLog(ctx context.Context, log domain.Log) error
 }

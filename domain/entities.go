@@ -51,3 +51,8 @@ type Review struct {
 	BookID int
 	Rate   int
 }
+
+type Log struct {
+	Date    time.Time
+	Content string
+}

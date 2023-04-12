@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"math/rand"
 	"time"
@@ -30,11 +31,26 @@ func main() {
 		log.Fatal(err)
 	}
 
+	populateLogs(db)
 	// populateCatergories(db)
 	// populateBooks(db)
 	// populateCustomers(db)
-	populateOrders(db)
+	// populateOrders(db)
 	// populateBookReviews(db)
+}
+
+func populateLogs(db store.IStore) {
+	for i := 0; i < 500_000; i++ {
+		l := domain.Log{
+			Date:    GenerateFakeDate(time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC), time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)),
+			Content: GenerateFakeBookTitle(),
+		}
+		err := db.CreateLog(context.Background(), l)
+		if err != nil {
+			fmt.Println(i, l.Date, l.Content)
+			log.Fatal(err)
+		}
+	}
 }
 
 func populateCatergories(db store.ICatergory) {
@@ -104,7 +120,7 @@ func populateOrders(db store.IStore) {
 	for i := 0; i < 500_000; i++ {
 		order := domain.Order{
 			CustomerID:  RandomInt(10, 4000),
-			Date:        GenerateFakeDate(time.Date(2010, 1, 1, 0, 0, 0, 0, time.UTC), time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)),
+			Date:        GenerateFakeDate(time.Date(2022, 1, 1, 0, 0, 0, 0, time.UTC), time.Date(2023, 1, 1, 0, 0, 0, 0, time.UTC)),
 			TotalAmount: RandomInt(10, 10000),
 			Status:      statuses[rand.Intn(len(statuses))],
 		}
